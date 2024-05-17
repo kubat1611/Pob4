@@ -20,15 +20,21 @@ public class UserAnalyzer {
                 .orElse(0.0);
     }
 
+
     public List<String> findCountriesWithMostUsers() {
-        return users.stream()
-                .collect(Collectors.groupingBy(User::getCountry, Collectors.counting()))
-                .entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(2)
+        Map<String, Long> countryUserCount = users.stream()
+                .collect(Collectors.groupingBy(User::getCountry, Collectors.counting()));
+
+        Long maxUserCount = countryUserCount.values().stream()
+                .max(Comparator.naturalOrder())
+                .orElse(0L);
+        return countryUserCount.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(maxUserCount))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
+
+
 
     public String findMostCommonFirstName() {
         return users.stream()

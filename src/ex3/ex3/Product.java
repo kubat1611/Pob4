@@ -1,3 +1,5 @@
+package ex3;
+
 public class Product {
     private final int id;
     private final String name;
